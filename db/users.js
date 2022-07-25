@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const client = require("./client");
 
 // database functions
@@ -22,11 +23,11 @@ async function getUser({ username, password })
 }
 try {
   const user = await getUserByUsername(username)
-if (user && user.password === password) delete user.password; 
-return user;
+if (user && user.password === password){ delete user.password; 
+return user;}
 // const user = await getUserByUsername(username)
-if (user && user.password !== password) 
-return 
+if (user && user.password !== password){ 
+return }
 }
   catch (error) {
   throw error
