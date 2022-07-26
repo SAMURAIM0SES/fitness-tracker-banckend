@@ -4,18 +4,21 @@ const client = require("./client");
 // database functions
 
 // user functions
-async function createUser({ username, password }) {
-  
+async function createUser({ username, password}) {
+  try{
     const { rows: [user] } = await client.query(
       `INSERT INTO users(username, password) 
       VALUES($1, $2) 
       ON CONFLICT (username) DO NOTHING 
-      RETURNING username;
+      RETURNING *;
     `, [username, password]);
 
+    delete user.password
     return user;
+  }catch (error){
+    throw error;
   }  
-    
+}  
   
 async function getUser({ username, password }) 
 { if (!username || !password) {
@@ -25,7 +28,6 @@ try {
   const user = await getUserByUsername(username)
 if (user && user.password === password){ delete user.password; 
 return user;}
-// const user = await getUserByUsername(username)
 if (user && user.password !== password){ 
 return }
 }
@@ -34,9 +36,24 @@ return }
 }
 }
 
-async function getUserById(userId) {
 
+async function getUserById(userId) {
+  try {
+const { rows: [user]
+} = await client.query(`
+  SELECT username, id FROM users WHERE id=$1;
+`, [userId]);
+if (!user) 
+  return null;
+
+  delete user.password;
+  return user;
+
+}catch (error){
+ throw(error)
 }
+}
+
 
 async function getUserByUsername(userName) 
 
