@@ -8,16 +8,23 @@ async function createActivity({ name, description }) {
     const {rows: [activity]} = await client.query(`
   INSERT INTO activities(name, description)
   VALUES ($1, $2) 
-  ON CONFLICT (name) DO NOTHING
   RETURNING *;`, [name, description]);
-  return activity;
-}catch(error){
-throw error
+  return activity;}
+  catch(error){
+throw error;
 }
 }
 
 async function getAllActivities() {
   // select and return an array of all activities
+  try{
+    const {rows} = await client.query(`
+  SELECT * FROM activities;
+  `);
+  return rows;}
+  catch(error){
+throw error;
+}
 }
 
 async function getActivityById(id) {}
