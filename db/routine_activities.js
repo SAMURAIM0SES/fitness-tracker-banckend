@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-catch */
+const { createActivity, getAllActivities, attachActivitiesToRoutines } = require("./activities");
 const client = require("./client");
 
 async function addActivityToRoutine({
@@ -5,7 +7,29 @@ async function addActivityToRoutine({
   activityId,
   count,
   duration,
-}) {}
+}) {
+  try {
+    const {rows: [routine_activities]} = await client.query(
+      `INSERT INTO routine_activities("routineId",
+        "activityId",
+        count,
+        duration) 
+      VALUES($1, $2, $3, $4)  
+      ON CONFLICT ("routineId", "activityId") DO NOTHING
+      RETURNING *;
+    `, [routineId,
+      activityId,
+      count,
+      duration]);
+
+    return routine_activities;
+  } catch (error) {
+    throw error;
+  }
+  
+}
+
+
 
 async function getRoutineActivityById(id) {}
 
