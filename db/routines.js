@@ -21,9 +21,35 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
   }
 }
 
-async function getRoutineById(id) {}
+async function getRoutineById(id) {
+  try {
+    const {
+      rows: [routines],
+    } = await client.query(
+      `
+    SELECT * FROM routines
+    WHILE id =$1
+    RETURNING *;`,
+      [id]
+    );
 
-async function getRoutinesWithoutActivities() {}
+    return routines;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getRoutinesWithoutActivities() {
+  try {
+    const {
+      rows: [routines],
+    } = await client.query(`
+    SELECT * FROM routines;`);
+    return routines;
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function getAllRoutines() {
   try {
@@ -60,9 +86,7 @@ async function getAllRoutinesByUser({ username }) {
       `SELECT routines.*, users.username AS "creatorName"
       FROM routines JOIN users ON routines."creatorId" = users.id
       WHERE "creatorId" = $1;
-     
-      
-      
+  
     `,
       [user.id]
     );
@@ -78,10 +102,7 @@ async function getPublicRoutinesByUser({ username }) {
     const { rows: routines } = await client.query(
       `SELECT routines.*, users.username AS "creatorName"
       FROM routines JOIN users ON routines."creatorId" = users.id
-      WHERE "creatorId" = $1 AND "isPublic" = true;
-     
-      
-      
+      WHERE "creatorId" = $1 AND "isPublic" = true; 
     `,
       [user.id]
     );
@@ -98,9 +119,6 @@ async function getPublicRoutinesByActivity({ id }) {
       FROM routines JOIN users ON routines."creatorId" = users.id
        JOIN routine_activities ON routine_activities."routineId" = routines.id
       WHERE routine_activities."activityId" = $1 AND routines."isPublic" = true;
-     
-      
-      
     `,
       [id]
     );
@@ -119,7 +137,6 @@ async function updateRoutine({ id, ...fields }) {
   if (setString.length === 0) {
     return;
   }
-
   try {
     const {
       rows: [routines],
@@ -132,7 +149,6 @@ async function updateRoutine({ id, ...fields }) {
     `,
       Object.values(fields)
     );
-
     return routines;
   } catch (error) {
     throw error;
