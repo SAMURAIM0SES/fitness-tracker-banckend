@@ -9,7 +9,24 @@ const {
   getRoutinesWithoutActivities,
   getRoutineActivitiesByRoutine,
   getAllActivities,
-  addActivityToRoutine
+  addActivityToRoutine,
+  getActivityById,
+  getActivityByName,
+  attachActivitiesToRoutines,
+  updateActivity,
+  getRoutineActivityById,
+  updateRoutineActivity,
+  destroyRoutineActivity,
+  canEditRoutineActivity,
+  getRoutineById,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  updateRoutine,
+  destroyRoutine,
+
 } = require("./");
 const client = require("./client");
 

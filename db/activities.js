@@ -116,5 +116,5 @@ module.exports = {
   getActivityByName,
   attachActivitiesToRoutines,
   createActivity,
-  updateActivity,
+  updateActivity
 };
