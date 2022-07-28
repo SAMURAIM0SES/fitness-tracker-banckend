@@ -9,9 +9,10 @@ const {
   getRoutinesWithoutActivities,
   getRoutineActivitiesByRoutine,
   getAllActivities,
-  addActivityToRoutine,
+  addActivityToRoutine
 } = require("./");
 const client = require("./client");
+
 
 async function dropTables() {
   console.log("Dropping All Tables...");
