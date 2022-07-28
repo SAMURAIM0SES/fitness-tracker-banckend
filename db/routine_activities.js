@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 const { createActivity, getAllActivities, attachActivitiesToRoutines } = require("./activities");
 const client = require("./client");
+const { getUserById } = require("./users");
 
 async function addActivityToRoutine({
   routineId,
@@ -98,7 +99,21 @@ RETURNING *;
   }
 }
 
-async function canEditRoutineActivity(routineActivityId, userId) {}
+async function canEditRoutineActivity(routineActivityId, userId) {
+try {
+ const {rows:[routine]} = await client.query(`
+ SELECT * FROM routine_activities
+ JOIN routines ON routine_activities."routineId" = routines.id
+ AND routine_activities.id = $1;
+
+ 
+ `,[routineActivityId]);
+ return routine.creatorId === userId;
+} catch (error) {
+  throw error
+}
+}
+
 
 module.exports = {
   getRoutineActivityById,
@@ -108,3 +123,6 @@ module.exports = {
   destroyRoutineActivity,
   canEditRoutineActivity,
 };
+
+
+
