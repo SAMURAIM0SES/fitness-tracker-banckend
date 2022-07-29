@@ -29,6 +29,7 @@ const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
 ////need to add err handlers later(soonish)
+///general and 404
 
 
 module.exports = app;
