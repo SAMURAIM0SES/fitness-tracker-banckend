@@ -2,8 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const { requireUser } = require("./utils");
-const { getUserByUsername, createUser } = require("../db/users");
+const { getUserByUsername, createUser, getUserById } = require("../db/users");
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
 
 // POST /api/users/register
 router.post("/register", async (req, res, next) => {
@@ -36,7 +37,7 @@ console.log(user, "line 30")
             id: user.id,
             username,
           },
-          process.env.JWT_SECRET,
+          JWT_SECRET,
           {
             expiresIn: "1w",
           }
@@ -92,8 +93,15 @@ router.post('/login', async (req, res, next) => {
 });
 
 // GET /api/users/me
+router.get('/me',requireUser, async (req, res, next) => {
+  try {res.send(req.user)
+    
+  } catch (error) {
+   next (error) 
+  }
 
+});
 
-// GET /api/users/:username/routines
+  // GET /api/users/:username/routines
 
 module.exports = router;
