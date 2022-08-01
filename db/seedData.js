@@ -2,31 +2,10 @@
 const {
   createUser,
   createActivity,
-  getUserByUsername,
-  getUser,
-  getUserById,
   createRoutine,
   getRoutinesWithoutActivities,
-  getRoutineActivitiesByRoutine,
   getAllActivities,
-  addActivityToRoutine,
-  getActivityById,
-  getActivityByName,
-  attachActivitiesToRoutines,
-  updateActivity,
-  getRoutineActivityById,
-  updateRoutineActivity,
-  destroyRoutineActivity,
-  canEditRoutineActivity,
-  getRoutineById,
-  getAllRoutines,
-  getAllPublicRoutines,
-  getAllRoutinesByUser,
-  getPublicRoutinesByUser,
-  getPublicRoutinesByActivity,
-  updateRoutine,
-  destroyRoutine,
-
+  addActivityToRoutine
 } = require("./");
 const client = require("./client");
 
@@ -80,7 +59,7 @@ async function createTables() {
             "activityId" INTEGER REFERENCES activities(id),
             duration INTEGER,
             count INTEGER,
-            UNIQUE("routineId", "activityId"));`);
+            UNIQUE ("routineId", "activityId"));`);
   
 
     console.log("Finished creating tables!");
